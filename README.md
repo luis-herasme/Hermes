@@ -23,4 +23,22 @@ Asignacion final de la asignatura de comunciaciones digitales de INTEC
 - [ ] Decisiones a tomar con estas cosas:
   - ¿Vamos a terminar usándolas? de ser así, ¿para qué? La opción más razonable
     que veo hasta el momento es para lo de equalización.
+    
+### Mediciones del canal para las decisiones correspondientes tasa de transferencia a usar, potencia de transmisión a usar, esquema de modulación a usar, etc...
+Esta parte es extremadamente importante porque a partir de acá es que vamos a
+sacar todos los parámetros necesarios para todas las cosas correspondientes al
+título de esta sección.
 
+- [ ] Medir el canal de transmisión:
+  - De ser posible, obtener la respuesta en frecuencia.
+  - Obtener los niveles de potencia de ruido de fondo.
+
+### Espectro disperso
+Piensa ve pensando en algo, xd
+
+*Chequear el apartado b) del encabezado de "Elementos a inclur en el reporte" del documento de la descripción de la asignación*
+
+### Tareas a realizar hasta el momento ordenadas por prioridad hasta el momento
+1. Medir las propiedades del canal.
+2. Diseñar el esquema de trama.
+3. Ingeniárselas con Matlab para conseguir partir los archivos en las tramas deseadas.
