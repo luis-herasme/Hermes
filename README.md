@@ -1,5 +1,3 @@
-# Sistema-de-comunicacion-digital-creador-con-radio-definido-por-software
-
 # Proyecto final de comunicaciones digitales, Enero 2021
 Asignacion final de la asignatura de comunciaciones digitales de INTEC
 
