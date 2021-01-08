@@ -32,6 +32,17 @@ título de esta sección.
 - [ ] Medir el canal de transmisión:
   - De ser posible, obtener la respuesta en frecuencia.
   - Obtener los niveles de potencia de ruido de fondo.
+  
+#### Sugerencias para el canal a utilizar
+Aún no he encontrado la manera para hacer el procesamiento en Matlab de las
+características del medio. De todas formas, mirando en el analizador de espectro
+de GNU radio, he visto que el rango de frecuencias de 980 MHz y 1020MHZ está
+vacío. Tengo entendido que los dispositivos inalámbricos caseros tienden a
+funcionar en frecuencias superiores a los 2000MHz (2GHz) y las emisoras de radio
+no pasan de los 500MHz, por lo que el rango sugerido debería estar libre para
+nuestras aplicaciones.
+[Waterfall display](imgs/pic-full-210108-1605-26.png)
+
 
 ### Espectro disperso
 Piensa ve pensando en algo, xd
