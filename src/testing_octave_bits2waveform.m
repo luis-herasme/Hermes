@@ -4,26 +4,26 @@ pkg load communications;
 
 
 sfps = 30; % Esta es la frecuencia de muestreo por símbolo. Dígase, la cantidad
-          % de muestras que se toma por tiempo de símbolo muestras por símbolos.
+          % de muestras que se toma por símbolo.
           % El nombre puede confundir mucho! esto es la cantidad de muestras que
           % hay por cada símbolo, no la frecuencia de muestreo per sé. La
           % frecuencia de muestreo a la que estamos acostumbrados se calcula de la forma
           % sfps*f/n_ciclos
 
 %% Generación de los datos a transmitir tomados en el tiempo.
-% Generando los bits en el tiempo
+% Generando algunos bits aleatorios para las pruebas.
 bits = randi([0,1],1,120);
 M = 2; %Numero de bits que voy a tomar
-data = bi2de(reshape(bits,M,[])',"left-msb");
+data = bi2de(reshape(bits,M,[])',"left-msb"); % Data en forma de simbolos que corresponden a pares de bits.
 
-% Generando las fases a usar para los símbolos
+% Generando las fases a usar para la transmision de estos símbolos
 fase = data;
 fase(fase == 0) = 0;
 fase(fase == 1) = pi/2;
 fase(fase == 2) = pi;
 fase(fase == 3) = 3*pi/2;
 
-% Generación de las amplitudes para usar con los símbolos
+% Generación de las amplitudes para la transmision de estos símbolos
 amplitud = data;
 A1 = 1.1;
 amplitud(amplitud == 0) = A1;
@@ -31,13 +31,13 @@ amplitud(amplitud == 1) = A1;
 amplitud(amplitud == 2) = A1;
 amplitud(amplitud == 3) = A1;
 
-% Generación de los pares de frecuencia y amplitud a utilizar
-upsample = [];
+% Generación de los pares de frecuencia y amplitud a utilizar para la transmision de los simbolos 
+sd = []; % El nombre de sd es de Sampled Data. Son basicamente los simbolos que van del 0-3 repetidos en corridas de la longitud especificada en sfps
 phi = [];
 A = [];
 for ii=1:length(data)
   for jj=1:1:sfps
-    upsample = [upsample data(ii)];
+    sd = [sd data(ii)];
     A = [A amplitud(ii)];
     phi = [phi fase(ii)];
   end
@@ -58,9 +58,10 @@ write_float_binary(s,"~/file_tests/test");
 
 
 %% Pulse Shaping #: Esta parte podrías tomarla o quitarla como se quiera. Después de todo se puede modular con Root Cosine dentro de GNU Radio.
-% Generación del pulse shaping
 Fs = sfps*f/n_ciclos
 Fd = 1/t_symb % Tasa de símbolo (setear luego de codificar tus datos en PSK o lo que sea que uses)
+
+% Generación del pulse shaping
 type_flag = "sqrt"; % Tipo de filtro RC a usar
 r = 0.35; % Roll-off factor
 [num,den] = rcosine(Fd,Fs,type_flag,r);
