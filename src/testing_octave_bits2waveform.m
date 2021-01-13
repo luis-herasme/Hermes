@@ -29,7 +29,7 @@ fase(fase == 1) = pi/2;
 fase(fase == 2) = pi;
 fase(fase == 3) = 3*pi/2;
 
-% Generación de las amplitudes para la transmision de estos símbolos
+% Generación de las amplitudes para la transmisión de estos símbolos
 amplitud = data;
 A1 = 1.1;
 amplitud(amplitud == 0) = A1;
@@ -38,7 +38,7 @@ amplitud(amplitud == 2) = A1;
 amplitud(amplitud == 3) = A1;
 
 % Generación de los pares de frecuencia y amplitud a utilizar para la
-% transmision de los simbolos
+% transmisión de los simbolos
 sd = []; % El nombre de sd es de Sampled Data. Son basicamente los simbolos que
          % van del 0-3 repetidos en corridas de la longitud especificada en sfps
 phi = [];
