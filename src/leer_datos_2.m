@@ -2,7 +2,7 @@
 % Leer archivo generado en MATLAB
 cuantos_datos_leer = 450000e3;
 % test_rec_8 es el que funciona
-filename = "test_rec_12";
+filename = "test_rec_20";
 archivo = fopen(filename, 'rb');
 datos = fread(archivo, cuantos_datos_leer, 'short');
 datos = datos(100: end);
@@ -18,7 +18,7 @@ title("Datos:")
 % Decodificar datos
 decodificado = zeros(length(datos), 1)';
 for i = 1: length(datos)
-    if datos(i) > 2
+    if datos(i) > 1
         decodificado(i) = 1;
     else
         decodificado(i) = 0;
