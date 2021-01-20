@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Mon Jan 18 04:59:02 2021
+# Generated: Tue Jan 19 00:31:55 2021
 ##################################################
 
 if __name__ == '__main__':
@@ -19,6 +19,7 @@ if __name__ == '__main__':
 from PyQt4 import Qt
 from gnuradio import blocks
 from gnuradio import eng_notation
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
@@ -62,19 +63,68 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_time = samp_time = 60e3
         self.samp_rate = samp_rate = 1e6
-        self.gain = gain = 55
+        self.gain = gain = 50
         self.frecuencia_rf = frecuencia_rf = 440e6
         self.data_rate = data_rate = 1e3
 
         ##################################################
         # Blocks
         ##################################################
-        self._gain_range = Range(1, 60, 1, 55, 200)
+        self._gain_range = Range(1, 60, 1, 50, 200)
         self._gain_win = RangeWidget(self._gain_range, self.set_gain, 'gain', "counter_slider", int)
         self.top_grid_layout.addWidget(self._gain_win)
+        self.root_raised_cosine_filter_0 = filter.interp_fir_filter_fff(100, firdes.root_raised_cosine(
+        	60, 100, 1, 0.1, 100))
+        self.qtgui_time_sink_x_0_1 = qtgui.time_sink_f(
+        	32, #size
+        	10, #samp_rate
+        	"Enviado en tiempo sin RRC", #name
+        	1 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_1.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_1.set_y_axis(-1, 1)
+
+        self.qtgui_time_sink_x_0_1.set_y_label('Amplitude', "Tiempo")
+
+        self.qtgui_time_sink_x_0_1.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_1.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_1.enable_autoscale(True)
+        self.qtgui_time_sink_x_0_1.enable_grid(False)
+        self.qtgui_time_sink_x_0_1.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_1.enable_control_panel(False)
+
+        if not True:
+          self.qtgui_time_sink_x_0_1.disable_legend()
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "blue"]
+        styles = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        markers = [-1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_1.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_1.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_1.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_1.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_1.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_1.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_1.set_line_alpha(i, alphas[i])
+
+        self._qtgui_time_sink_x_0_1_win = sip.wrapinstance(self.qtgui_time_sink_x_0_1.pyqwidget(), Qt.QWidget)
+        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_1_win)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	2048, #size
-        	samp_time, #samp_rate
+        	32, #size
+        	10, #samp_rate
         	"Recibido en tiempo", #name
         	1 #number of inputs
         )
@@ -120,9 +170,9 @@ class top_block(gr.top_block, Qt.QWidget):
         self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
         self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_0_win)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-        	2048, #size
-        	samp_time, #samp_rate
-        	"Enviado en tiempo", #name
+        	320, #size
+        	100, #samp_rate
+        	"Enviado en tiempo con RRC", #name
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0.set_update_time(0.10)
@@ -132,7 +182,7 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self.qtgui_time_sink_x_0.enable_tags(-1, True)
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0.enable_autoscale(True)
         self.qtgui_time_sink_x_0.enable_grid(False)
         self.qtgui_time_sink_x_0.enable_axis_labels(True)
         self.qtgui_time_sink_x_0.enable_control_panel(False)
@@ -312,9 +362,9 @@ class top_block(gr.top_block, Qt.QWidget):
         		       0,
         		       0,
         		       0)
-        self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_float*1, samp_time,True)
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, 1e6,True)
-        self.blocks_repeat_0 = blocks.repeat(gr.sizeof_float*1, 100)
+        self.blocks_throttle_0_1 = blocks.throttle(gr.sizeof_float*1, 1,True)
+        self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_float*1, 1,True)
+        self.blocks_repeat_0_0 = blocks.repeat(gr.sizeof_float*1, 1000)
         self.blocks_float_to_complex_1 = blocks.float_to_complex(1)
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, 'datos_preambulo_color', True)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_float*1, 'datos_preambulo_recibidos_color', False)
@@ -325,16 +375,17 @@ class top_block(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_throttle_0_0, 0))
-        self.connect((self.blocks_complex_to_float_0, 0), (self.qtgui_freq_sink_x_1, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.blocks_repeat_0, 0))
+        self.connect((self.blocks_file_source_0, 0), (self.blocks_throttle_0_1, 0))
         self.connect((self.blocks_float_to_complex_1, 0), (self.limesdr_sink_0, 0))
-        self.connect((self.blocks_repeat_0, 0), (self.blocks_throttle_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.blocks_float_to_complex_1, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.qtgui_time_sink_x_0, 0))
+        self.connect((self.blocks_repeat_0_0, 0), (self.root_raised_cosine_filter_0, 0))
         self.connect((self.blocks_throttle_0_0, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.blocks_throttle_0_0, 0), (self.qtgui_time_sink_x_0_0, 0))
+        self.connect((self.blocks_throttle_0_1, 0), (self.blocks_repeat_0_0, 0))
+        self.connect((self.blocks_throttle_0_1, 0), (self.qtgui_time_sink_x_0_1, 0))
         self.connect((self.limesdr_source_0, 0), (self.blocks_complex_to_float_0, 0))
+        self.connect((self.root_raised_cosine_filter_0, 0), (self.blocks_float_to_complex_1, 0))
+        self.connect((self.root_raised_cosine_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.root_raised_cosine_filter_0, 0), (self.qtgui_time_sink_x_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -346,9 +397,6 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_samp_time(self, samp_time):
         self.samp_time = samp_time
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_time)
-        self.qtgui_time_sink_x_0.set_samp_rate(self.samp_time)
-        self.blocks_throttle_0_0.set_sample_rate(self.samp_time)
 
     def get_samp_rate(self):
         return self.samp_rate

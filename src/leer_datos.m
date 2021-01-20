@@ -11,7 +11,7 @@ inicio  = 50e3;
 datos   = datos(inicio: end);
 
 % Cuanto se repite cada valor (Debe ser igual que en GNU RADIO)
-interpolation = 100;
+interpolation = 10;
 
 % Preambulo debe ser igual que en generar_datos.m
 preambulo = [
@@ -144,7 +144,7 @@ end
 
 % Convertir datos a vector binario
 data_enviada_estimada = convertir_a_binario(datos_con_preambulo, interpolation);
-buscar_preambulo(data_enviada_estimada, ~preambulo_no_repetido);
+buscar_preambulo(data_enviada_estimada, preambulo_no_repetido);
 
 % imagen_enviada_estimada = reshape(data_enviada_estimada, 4, 4)';
 % imshow(imagen_enviada_estimada)
