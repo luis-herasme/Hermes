@@ -12,14 +12,10 @@ function r = recibir(datos_binarios, preambulo)
         inicio = 1 + (i - 1) * 8;
         fin = i * 8;
         byte = datos_binarios_sin_preambulo(inicio: fin);
-        decimal = bi2de(byte', 'left-msb');
+        
+        decimal = bi2de(byte, 'left-msb');
         datos_decimal(i) = decimal;
     end
-
-    altura = datos_decimal(1)
-    anchura = datos_decimal(2)
-    altura = 2;
-    anchura = 2;
 
     tamano_de_data_binario = cat(
         2,
@@ -27,8 +23,11 @@ function r = recibir(datos_binarios, preambulo)
         de2bi(datos_decimal(4), 8, 'left-msb'),
         de2bi(datos_decimal(5), 8, 'left-msb')
     );
-    % tamano_de_data = bi2de(tamano_de_data_binario, 'left-msb')
-    tamano_de_data = 136;
+
+    altura = datos_decimal(1)
+    anchura = datos_decimal(2)
+    tamano_de_data = bi2de(tamano_de_data_binario, 'left-msb')
+    
 
     imagen_decodificada = datos_decimal(6: 6 + altura*anchura*3 - 1)
     imagen_decodificada = reshape(imagen_decodificada, [altura anchura 3]);
