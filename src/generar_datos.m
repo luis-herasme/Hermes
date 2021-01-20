@@ -1,9 +1,11 @@
 pkg load communications
 
 % Cargar imagen
+
+% imagen = imread("../img/color", "png");
 imagen = imread("../img/dog2", "jpg");
 
-% imagen                   = imread("../img/color", "png");
+
 [ Altura Anchura Color ] = size(imagen);
 
 % HEADER: 34 bits
