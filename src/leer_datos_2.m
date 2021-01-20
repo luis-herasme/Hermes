@@ -2,7 +2,7 @@
 % Leer archivo generado en MATLAB
 cuantos_datos_leer = 450000e3;
 % test_rec_8 es el que funciona
-filename = "test_rec_10";
+filename = "test_rec_12";
 archivo = fopen(filename, 'rb');
 datos = fread(archivo, cuantos_datos_leer, 'short');
 datos = datos(100: end);
@@ -149,6 +149,7 @@ for i = 1: length(decodificado) - tamano_preambulo
 end
 
 [_ idx] = max(autocorrelacion);
+idx
 preambulo_estimado = decodificado(idx: idx + tamano_preambulo - 1);
 
 % Graficar autocorrelacion

@@ -28,7 +28,8 @@ function r = recibir(datos_binarios, preambulo)
     anchura = datos_decimal(2)
     tamano_de_data = bi2de(tamano_de_data_binario, 'left-msb')
 
-    % imagen_decodificada = datos_decimal(6: 6 + altura * anchura * 3 - 1)
-    % imagen_decodificada = reshape(imagen_decodificada, [altura anchura 3]);
-    % imshow(imagen_decodificada)
+    imagen_decodificada = datos_decimal(6: 6 + altura * anchura * 3 - 1)';
+    imagen_decodificada = reshape(imagen_decodificada, [altura anchura 3]);
+    imagen_decodificada = uint8(imagen_decodificada)
+    imshow(imagen_decodificada)
 end
