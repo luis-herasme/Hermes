@@ -117,6 +117,10 @@ preambulo = [
     0]';
 
 datos = cat(2, preambulo, ALTURA, ANCHURA, DATA_SIZE, data_binaria');
+% Sugerencia. Agregar algunos valores en el preámbulo que sólo sean basura
+% debido a que se pierden algunos de estos cuando se comienza la transmisión y
+% recepción.
+datos = cat(2, randi([0,1],1,10e3),preambulo, ALTURA, ANCHURA, DATA_SIZE, data_binaria');
 
 disp("Se guardo la siguiente cantidad de bits: ")
 length(datos)
