@@ -821,11 +821,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>enviado_por_radio</value>
+      <value>enviado_por_radio_dog</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1144, 836)</value>
+      <value>(1128, 860)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -868,7 +868,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>enviar_por_radio</value>
+      <value>enviar_por_radio_dog</value>
     </param>
     <param>
       <key>_coordinate</key>

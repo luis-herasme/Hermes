@@ -1,7 +1,7 @@
 pkg load communications
 
 % Cargar imagen
-imagen = imread("../img/color", "png");
+imagen = imread("../img/dog", "jpg");
 
 [ Altura Anchura Color ] = size(imagen);
 
@@ -115,6 +115,7 @@ preambulo = [
     1
     0
     0]';
+
 datos = cat(2, preambulo, ALTURA, ANCHURA, DATA_SIZE, data_binaria');
 
 disp("Se guardo la siguiente cantidad de bits: ")
@@ -126,4 +127,4 @@ length(datos)
 % fwrite(file, datos, "float");
 % fclose(file);
 
-write_uchar_binary(datos, "./enviar_por_radio");
+write_uchar_binary(datos, "./enviar_por_radio_dog");

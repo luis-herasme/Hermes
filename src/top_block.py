@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Wed Jan 20 21:43:23 2021
+# Generated: Wed Jan 20 22:05:20 2021
 ##################################################
 
 if __name__ == '__main__':
@@ -276,8 +276,8 @@ class top_block(gr.top_block, Qt.QWidget):
         self.blocks_pack_k_bits_bb_0 = blocks.pack_k_bits_bb(4)
         self.blocks_multiply_xx_0_0 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, 'enviar_por_radio', True)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, 'enviado_por_radio', False)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, 'enviar_por_radio_dog', True)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, 'enviado_por_radio_dog', False)
         self.blocks_file_sink_0.set_unbuffered(False)
         self.analog_sig_source_x_0_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 200e3, 1, 0)
         self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 200e3, 1, 0)
