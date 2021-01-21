@@ -121,7 +121,17 @@ disp("Se guardo la siguiente cantidad de bits: ")
 length(datos)
 
 % Guardar en archivo
+#{
 filename = "datos_preambulo_color";
 file = fopen(filename, "wb");
 fwrite(file, datos, "float");
 fclose(file);
+#}
+
+write_uchar_binary(datos,"./datos_preambulo_color") % Esta funcioncita realmente
+                                                    % no es la gran cosa, solo
+                                                    % estoy escribiendo el
+                                                    % vector de
+                                                    % datos_preambulo_color con
+                                                    % sus elementos en
+                                                    % caracteres sin signo.
