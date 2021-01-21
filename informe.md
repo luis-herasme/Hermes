@@ -97,8 +97,15 @@ la posibilidad de que al momento de la recepción se haya sincronizado con una
 ambigüedad de 180 grados. Para resolver esto, se optó por la codificación
 diferencial desde el momento del mapeo de los símbolos antes de la transmisión. 
 ### Guardado de los símbolos
-Esta parte sí que tiene el diablazo y que hasta el momento sólo tengo
-corazonadas.
+Por último, este bloque se encarga de convertir el flujo de bytes con el bit
+menos significativo seteado en 1 a un byte de K bits relevantes. Dado a que los
+datos codificados en la sección de transmisión fueron bytes, se asume que cada
+bit de estos fue mapeado a uno de los símbolos escogidos para nuestra
+constelación (o -1 o 1). Al momento de la decodificación diferencial se asume
+que se generaron bytes con los valores correspondientes a cada uno de los bits
+mapeados. Utilizando el bloque de [**pack K bits**](https://wiki.gnuradio.org/index.php/Pack_K_Bits )
+se trata de unir estos bytes que representan los valores enviados en bytes que 
+los representen para posteriormente ser procesados en *GNU/Octave*.
 ## Footnotes
 
 [^1]:
