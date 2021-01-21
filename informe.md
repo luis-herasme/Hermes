@@ -49,7 +49,7 @@ Este bloque de LimeSDR está configurado con:
 - Filtro digital pasabanda para la transmisión con un ancho de banda de una vez
   la frecuencia de muestreo usada y centrado alrededor de la frecuencia de
   transmisión.
-
+  
 ## Recepción y detección de símbolos
 ### Recepción de la señal enviada
 En esta sección se usa el bloque de recepción (Rx) para el Lime SDR. Este bloque
@@ -64,7 +64,7 @@ pueden surgir por los procesos de up y donw convertion y también para eliminar
 otras componentes de frecuencias fuera del deseado asociadas a interferencias
 del medio.
 
-### Sincronización de Clock
+### Sincronización de Clock y Fase
 En este punto del sistema, se busca encontrar el mejor tiempo para muestrear las
 señales venideras, lo que terminará maximizando la relación señal a ruído de
 cada muestra como también reducirá el efecto de interferencia entre símbolos.
@@ -86,15 +86,23 @@ filtros se encuentra muy cerca del momento óptimo para el muestreo
 
 Para encontrar este desfase de dónde se debería samplear tomando en cuenta los
 resultados del **Polyphase Clock Sync** se utiliza un lazo de control de segundo
-orden.
-### Sincronización de Fase
+orden.  
 ### Decodificación de los símbolos
+Haciendo referencia a la sección de modulación de constelación, tenemos la
+siguiente situación al momento de la decodificación de los símbollos. Esta
+cuestión es el asegurar el mismo mapeo tanto para los símbolos enviados como
+para el de los recibidos. Nada de lo que se ha hecho hasta el momento asegura la
+consistencia del mapeo a través de las varias fases de nuestro sistema, existe
+la posibilidad de que al momento de la recepción se haya sincronizado con una
+ambigüedad de 180 grados. Para resolver esto, se optó por la codificación
+diferencial desde el momento del mapeo de los símbolos antes de la transmisión. 
 ### Guardado de los símbolos
+Esta parte sí que tiene el diablazo y que hasta el momento sólo tengo
+corazonadas.
 ## Footnotes
 
 [^1]:
-Tratar de encontrar la forma de entender qué hace esta función a fondo y
-desglosar su funcionamiento.
+Tratar de encontrar la forma de entender qué hace esta función a fondo y desglosar su funcionamiento.
 [^2]:
 Tratar de encontrar cuál es la razón de la interpolación por 50 y cuantas muestras por símbolo estás usano en estos momentos.
 [^3]:
