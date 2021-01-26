@@ -49,24 +49,24 @@ function [salida] = decodificar_hamming_7_4(entrada)
 
 	%% VERSIÓN VIEJA
 
-	% % Determino la posicion del sindrome en la lista de sindromes
-	% [ m n ] = size(sindromes);
+		% % Determino la posicion del sindrome en la lista de sindromes
+		% [ m n ] = size(sindromes);
 
-	% for i = 1: m
-	% 	sindrome  = sindromes(i, :);
-	% 	row_index = find(ismember(SINDROMES, sindrome, 'rows'))
-		
-	% 	% Determino que error representa dicho sindrome
-	% 	error_detectado = ERRORES(row_index, :);
+		% for i = 1: m
+		% 	sindrome  = sindromes(i, :);
+		% 	row_index = find(ismember(SINDROMES, sindrome, 'rows'))
+			
+		% 	% Determino que error representa dicho sindrome
+		% 	error_detectado = ERRORES(row_index, :);
 
-	% 	% Le sumo el error al mensaje para removerlo
-	% 	sin_error = mod(entrada_en_bloques(i, :) + error_detectado, 2);
+		% 	% Le sumo el error al mensaje para removerlo
+		% 	sin_error = mod(entrada_en_bloques(i, :) + error_detectado, 2);
 
-	% 	% Como es un codigo sistematico solo 
-	% 	% extraigo la parte que corresponde al mensaje 
-	% 	msg = sin_error( 4: end);
-	% 	salida = [salida msg];
-	% end
+		% 	% Como es un codigo sistematico solo 
+		% 	% extraigo la parte que corresponde al mensaje 
+		% 	msg = sin_error( 4: end);
+		% 	salida = [salida msg];
+		% end
 
 	%% VERSIÓN NUEVA VECTORIZADA (MUCHO MÁS RÁPIDO)
 

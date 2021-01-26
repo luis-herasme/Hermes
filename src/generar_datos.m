@@ -5,7 +5,7 @@ img_nombre = "../img/colo2"
 imagen = imread(img_nombre, "png");
 
 [ Altura Anchura Color ] = size(imagen);
-
+chipRate = 3;
 % HEADER: 40 bits
 ALTURA    = de2bi(Altura              ,  8, 'left-msb');
 ANCHURA   = de2bi(Anchura             ,  8, 'left-msb');
@@ -22,12 +22,17 @@ ALTURA = codificar_hamming_7_4(ALTURA);
 ANCHURA = codificar_hamming_7_4(ANCHURA);
 DATA_SIZE = codificar_hamming_7_4(DATA_SIZE);
 
-preambulo = [1 1 1 1 0 0 0 1 0 0 1 1 0 1 0];
+ preambulo = [1 1 1 1 0 0 0 1 0 0 1 1 0 1 0];
 
 % Se expande el preambulo para disminuir la 
 % probabilidad de que haya un error de deteccion.
 datos      = cat(2, ALTURA, ANCHURA, DATA_SIZE, data_binaria);
-esparcida  = DSSS(datos, preambulo, 3);
+
+Fs = 100;
+graficarFFT(datos, Fs, "FFT antes de DSSS.")
+esparcida  = DSSS(datos, preambulo, chipRate);
+graficarFFT(esparcida, Fs, "FFT luego de DSSS.")
+
 preambulo4 = repelem(preambulo, 4);
 datos      = cat(2, zeros(1, 100), preambulo4, esparcida);
 
@@ -40,7 +45,7 @@ disp("Se guardo la siguiente cantidad de bits: ")
 length(datos)
 
 % Guardar en archivo
-filename = "enviar_colo2_h_dsss.dat"
+filename = "enviar"
 file = fopen(filename, "wb");
 fwrite(file, datos, "float");
 fclose(file);

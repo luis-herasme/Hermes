@@ -3,9 +3,13 @@ pkg load signal
 
 %% Leer archivo generado en GNU radio.
 
-filename           = "./colo2_h_dsss.dat"
-cuantos_datos_leer = 3e6;
-empezar_a_leer     = 0.1e6;
+filename           = "./recibido"
+cuantos_datos_leer = 500e3;
+empezar_a_leer     = 0.2e6;
+
+% Cada símbolo contiene 10 muestras, esto se determina
+% en GNU radio donde tenemos una variable llamada muestras por símbolo.
+muestras_por_simbolo = 5;
 
 % La transmisión no empieza de forma instantánea
 % por ende las primeras muestras por lo general son ruido. 
@@ -15,20 +19,18 @@ datos = leer_archivo(filename, cuantos_datos_leer, empezar_a_leer);
 
 disp( [ "Cantidad de datos: " num2str(length(datos)) ] );
 
-% Remover componente constante de los datos.
-desplazamiento = sum(datos) / length(datos)
-datos          = datos - desplazamiento;
+% % Remover componente constante de los datos.
+% desplazamiento = sum(datos) / length(datos)
+% datos          = datos - desplazamiento;
 
 % Graficar datos recibidos
-% figure(1)
-% plot(datos)
-% title("Datos:")
+figure()
+plot(datos(1: 1e3))
+title("Datos:")
 
 % % Sincronizacion de trama usando Autocorrelación de secuencia de pseudo ruido.
 
-% Cada símbolo contiene 10 muestras, esto se determina
-% en GNU radio donde tenemos una variable llamada muestras por símbolo.
-muestras_por_simbolo = 10;
+
 
 % Este preámbulo debe ser igual que en generar_datos.m
 preambulo = [ 1 1 1 1 0 0 0 1 0 0 1 1 0 1 0 ]';
@@ -68,6 +70,8 @@ preambulo_repetido = 2 * preambulo_repetido - 1;
 
 % Calculando la autocorrelación (MUCHO MÁS RÁPIDO)
 [ R, desfases ] = xcorr(datos, preambulo_repetido);
+figure()
+plot(R)
 % [ _, i ]        = max(R);
 [ _ ind] = sort(R, 'descend');
 idx = ind(2);
@@ -78,7 +82,7 @@ idx = desfases(idx)
 % plot(autocorrelacion)
 % title("Autocorrelacion:")
 
-figure(3)
+figure()
 plot(datos(idx: idx + length(preambulo_repetido) ))
 title("Trama de autocorrelacion:")
 
@@ -89,9 +93,18 @@ title("Trama de autocorrelacion:")
 % para porteriormente utilizarlo como umbral para
 % determinar que es un cero y que es un uno
 
-threshold           = sum( datos (idx: idx + length(preambulo_repetido)) ) / length(preambulo_repetido)
+% threshold           = sum( datos (idx: idx + length(preambulo_repetido)) ) / length(preambulo_repetido)
+% threshold = 0.0572;
+threshold = 0.68;
 datos_con_preambulo = datos(idx: end);
-detectado           = deteccion(datos_con_preambulo, muestras_por_simbolo, threshold);
+
+if muestras_por_simbolo > 1 
+    detectado = deteccion(datos_con_preambulo, muestras_por_simbolo, threshold);
+else
+    datos_con_preambulo(datos_con_preambulo < threshold) = 0;
+    datos_con_preambulo(datos_con_preambulo > threshold) = 1;
+    detectado = datos_con_preambulo';
+end
 
 % Comparando el preámbulo obtenido de la señal luego de la decodificación 
 % con el preámbulo para determinar BER del mismo
@@ -105,19 +118,24 @@ data_sin_preambulo = detectado( length ( preambulo_repetido_en_bits ) + 1 : end 
 size(data_sin_preambulo')
 size(preambulo)
 
+Fs = 100;
+
+graficarFFT(datos, Fs, "FFT antes de DSSS.")
 comprimida         = DSSS_comprimir(data_sin_preambulo, preambulo);
+
 des_repetida = downsample(comprimida, 3);
+graficarFFT(des_repetida, Fs/3, "FFT luego de DSSS.")
 
 %% Decodificar la imagen en siguiendo nuestro estándar de cabecera
 
 data_decodificada = decodificar_hamming_7_4( des_repetida );
 
 % % Decodificar Hamming y mostrar imagen.
-recibir_hamming(data_decodificada)
+recibir_imagen(data_decodificada)
 
 % % Guardar resultados, codificados con Hamming
 
-resultado = "resultado_lena255.dat"
+resultado = "resultado"
 file = fopen(resultado, "wb");
 fwrite(file, detectado, "float");
 fclose(file);
