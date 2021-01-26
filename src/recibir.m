@@ -1,7 +1,7 @@
 function r = recibir(datos_binarios, preambulo)
     pkg load communications
     preambulo_size = length(preambulo)
-    cantidad_de_bytes = ceil((length(datos_binarios) - preambulo_size) /8);
+    cantidad_de_bytes = ceil((length(datos_binarios) - preambulo_size) /8)
     datos_binarios_sin_preambulo = datos_binarios(preambulo_size + 1: end);
     datos_decimal = zeros(1, cantidad_de_bytes);
 
@@ -27,7 +27,7 @@ function r = recibir(datos_binarios, preambulo)
     altura = datos_decimal(1)
     anchura = datos_decimal(2)
     tamano_de_data = bi2de(tamano_de_data_binario, 'left-msb')
-
+    figure()
     imagen_decodificada = datos_decimal(6: 6 + altura * anchura * 3 - 1)';
     imagen_decodificada = reshape(imagen_decodificada, [altura anchura 3]);
     imagen_decodificada = uint8(imagen_decodificada)
