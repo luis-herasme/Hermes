@@ -3,13 +3,14 @@ pkg load signal
 
 %% Leer archivo generado en GNU radio.
 
-filename           = "./recibido"
-cuantos_datos_leer = 500e3;
-empezar_a_leer     = 0.2e6;
+filename           = "./resultados/recvImg2"
+cuantos_datos_leer = 15e6;
+empezar_a_leer     = 8e6;
 
-% Cada símbolo contiene 10 muestras, esto se determina
+% Cada símbolo contiene 5 muestras, esto se determina
 % en GNU radio donde tenemos una variable llamada muestras por símbolo.
 muestras_por_simbolo = 5;
+usarDSSS = 1
 
 % La transmisión no empieza de forma instantánea
 % por ende las primeras muestras por lo general son ruido. 
@@ -19,18 +20,13 @@ datos = leer_archivo(filename, cuantos_datos_leer, empezar_a_leer);
 
 disp( [ "Cantidad de datos: " num2str(length(datos)) ] );
 
-% % Remover componente constante de los datos.
-% desplazamiento = sum(datos) / length(datos)
-% datos          = datos - desplazamiento;
 
-% Graficar datos recibidos
+%Graficar datos recibidos
 figure()
 plot(datos(1: 1e3))
 title("Datos:")
 
 % % Sincronizacion de trama usando Autocorrelación de secuencia de pseudo ruido.
-
-
 
 % Este preámbulo debe ser igual que en generar_datos.m
 preambulo = [ 1 1 1 1 0 0 0 1 0 0 1 1 0 1 0 ]';
@@ -46,7 +42,7 @@ preambulo_repetido = repelem(preambulo, frecuencia_preambulo * muestras_por_simb
 % constante de data esta se volvió NRZ.
 preambulo_repetido = 2 * preambulo_repetido - 1;
 
-    % %% Calculando la autocorrelación
+    % %% Calculando la correlación
     % autocorrelacion = zeros(1, length(datos));
     % K = sum(preambulo .* preambulo);
 
@@ -70,12 +66,20 @@ preambulo_repetido = 2 * preambulo_repetido - 1;
 
 % Calculando la autocorrelación (MUCHO MÁS RÁPIDO)
 [ R, desfases ] = xcorr(datos, preambulo_repetido);
+vMax = max(R);
+R = R/vMax;
+indicePrimerPico = min(find(R > 0.95));
+
 figure()
-plot(R)
-% [ _, i ]        = max(R);
-[ _ ind] = sort(R, 'descend');
-idx = ind(2);
-idx = desfases(idx)
+plot(desfases/1e6, R)
+
+% [ _ ind] = sort(R, 'descend');
+%{
+    vMax = _(1);
+idx = ind(1);
+%}
+
+idx = desfases(indicePrimerPico);
 
 % Graficar autocorrelacion
 % figure(2)
@@ -84,8 +88,9 @@ idx = desfases(idx)
 
 figure()
 plot(datos(idx: idx + length(preambulo_repetido) ))
-title("Trama de autocorrelacion:")
+title("preambulo:")
 
+factorDeNormalizacion = sum(datos(idx: idx + 80))/80
 
 %% Deteccion.
 
@@ -95,8 +100,8 @@ title("Trama de autocorrelacion:")
 
 % threshold           = sum( datos (idx: idx + length(preambulo_repetido)) ) / length(preambulo_repetido)
 % threshold = 0.0572;
-threshold = 0.68;
-datos_con_preambulo = datos(idx: end);
+threshold = 0.5;
+datos_con_preambulo = datos(idx: end)/factorDeNormalizacion;
 
 if muestras_por_simbolo > 1 
     detectado = deteccion(datos_con_preambulo, muestras_por_simbolo, threshold);
@@ -114,17 +119,18 @@ preambulo_estimado         = detectado(1: length(preambulo_repetido_en_bits));
 BER_PREAMBULO              = sum(preambulo_estimado ~= preambulo_repetido_en_bits') / length(preambulo_repetido_en_bits)
 
 % % DSSS
-data_sin_preambulo = detectado( length ( preambulo_repetido_en_bits ) + 1 : end ) ; % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! % DEBE SER END !!!! 
+data_sin_preambulo = detectado( length ( preambulo_repetido_en_bits ) + 1 : end ) ;
 size(data_sin_preambulo')
 size(preambulo)
 
-Fs = 100;
 
-graficarFFT(datos, Fs, "FFT antes de DSSS.")
-comprimida         = DSSS_comprimir(data_sin_preambulo, preambulo);
+if usarDSSS == 1
+    comprimida = DSSS_comprimir(data_sin_preambulo, preambulo);
+    des_repetida = downsample(comprimida, 3);
+else
+    des_repetida = data_sin_preambulo;
+end
 
-des_repetida = downsample(comprimida, 3);
-graficarFFT(des_repetida, Fs/3, "FFT luego de DSSS.")
 
 %% Decodificar la imagen en siguiendo nuestro estándar de cabecera
 
@@ -135,7 +141,7 @@ recibir_imagen(data_decodificada)
 
 % % Guardar resultados, codificados con Hamming
 
-resultado = "resultado"
+resultado = "./procesado/img1_1"
 file = fopen(resultado, "wb");
 fwrite(file, detectado, "float");
 fclose(file);

@@ -1,4 +1,4 @@
-function r = recibir_hamming(datos_binarios)
+function r = recibir_imagen(datos_binarios)
     pkg load communications
 
     datos_decimal = convertir_decimal(datos_binarios);

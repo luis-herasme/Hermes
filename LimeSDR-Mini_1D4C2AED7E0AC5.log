@@ -1,0 +1,38 @@
+[ TESTING STARTED ]
+->Start time: Tue Mar 23 10:25:54 2021
+
+->Device: LimeSDR Mini, media=USB 2, module=FT601, serial=1D4C2AED7E0AC5, index=0
+Warning: USB3 not available
+  Serial Number: 1D4C2AED7E0AC5
+
+[ Clock Network Test ]
+->REF clock test
+  Test results: 15256; 28453; 41650 - PASSED
+->VCTCXO test
+  Results : 6711087 (min); 6711243 (max) - PASSED
+->Clock Network Test PASSED
+
+[ FPGA EEPROM Test ]
+->Read EEPROM
+->Read data: 13 02 0C 13 02 0C 02
+->FPGA EEPROM Test PASSED
+
+[ LMS7002M Test ]
+->Perform Registers Test
+->External Reset line test
+  Reg 0x20: Write value 0xFFFD, Read value 0xFFFD
+  Reg 0x20: value after reset 0x0FFFF
+->LMS7002M Test PASSED
+
+[ RF Loopback Test ]
+->Configure LMS
+->Run Tests (TX_2 -> LNA_W):
+  CH0 (SXR=1000.0MHz, SXT=1005.0MHz): Result:(-16.2 dBFS, 5.00 MHz) - PASSED
+->Run Tests (TX_1 -> LNA_H):
+  CH0 (SXR=2100.0MHz, SXT=2105.0MHz): Result:(-14.2 dBFS, 5.00 MHz) - PASSED
+->RF Loopback Test PASSED
+
+=> Board tests PASSED <=
+
+Elapsed time: 7.85 seconds
+
